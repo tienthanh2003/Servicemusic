@@ -13,7 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button startButton, stopButton;
+    private Button startServiceButton, stopServiceButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,30 +21,33 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        // Xử lý hiển thị edge-to-edge
+        // Thiết lập hiển thị edge-to-edge
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // Ánh xạ nút
-        startButton = findViewById(R.id.startButton);
-        stopButton = findViewById(R.id.stopButton);
 
-        // Bắt sự kiện nút Start
-        startButton.setOnClickListener(new View.OnClickListener() {
+        startServiceButton = findViewById(R.id.startButton);
+        stopServiceButton = findViewById(R.id.stopButton);
+
+        // Sử dụng Started Service (Unbound Service)
+        // Khi người dùng nhấn nút Start, gọi startService() để bắt đầu service
+        startServiceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startService(new Intent(MainActivity.this, MusicService.class));
+                Intent startIntent = new Intent(MainActivity.this, MusicService.class);
+                startService(startIntent); // Khởi động Started (Unbound) Service
             }
         });
 
-        // Bắt sự kiện nút Stop
-        stopButton.setOnClickListener(new View.OnClickListener() {
+        // Khi người dùng nhấn nút Stop, gọi stopService() để dừng service
+        stopServiceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                stopService(new Intent(MainActivity.this, MusicService.class));
+                Intent stopIntent = new Intent(MainActivity.this, MusicService.class);
+                stopService(stopIntent); // Dừng Started (Unbound) Service
             }
         });
     }
